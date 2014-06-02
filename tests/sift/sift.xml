@@ -37,6 +37,34 @@
 	<VisualizerRef target="ReadyValidIo" path=".io_out"/>
 </AutoGrid>
 
+<MappedDisplay ref="FIR_State">
+  <Mapping key="0" text="prime" color="green"/>
+  <Mapping key="1" text="pipe" color="yellow"/>
+  <Mapping key="2" text="flush" color="red"/>
+</MappedDisplay>
+
+<AutoGrid ref='SymmetricFIR' step='col'>
+	<VisualizerRef target="ReadyValidIo" path=".io_in"/>
+	<Break/>
+	<VisualizerRef target="SiftCounter" path=".in_counter"/>
+	<!--
+    <VisualizerRef target="SiftCounter" path=".term_counter"/>
+	  <VisualizerRef target="SiftCounter" path=".out_counter"/>
+  -->
+	<DataText path=".state" display="FIR_State"/>
+	<Break/>
+	<VisualizerRef target="ReadyValidIo" path=".io_out"/>
+</AutoGrid>
+
+<AutoGrid ref='Gaussian' step='col'>
+	<VisualizerRef target="ReadyValidIo" path=".io_in"/>
+	<Break/>
+	<VisualizerRef target="SymmetricFIR" path=".row_fir"/>
+	<VisualizerRef target="SymmetricFIR" path=".col_fir"/>
+	<Break/>
+	<VisualizerRef target="ReadyValidIo" path=".io_out"/> 
+</AutoGrid>
+
 <AutoGrid ref='UpSampler' step='col'>
 	<VisualizerRef target="ReadyValidIo" path=".io_in"/>
 	<Break/>
@@ -52,9 +80,49 @@
 	<VisualizerRef target="ReadyValidIo" path=".io_out"/>
 </AutoGrid>
 
-<AutoGrid ref='Octave' step='row'>
+<AutoGrid ref='DelayDiff' step='col'>
+	<VisualizerRef target="ReadyValidIo" path=".io_a"/>
+	<VisualizerRef target="ReadyValidIo" path=".io_b"/>
+	<Break/>
+	<VisualizerRef target="ReadyValidIo" path=".io_out"/>
+</AutoGrid>
+
+<AutoGrid ref='samplers' step='row'>
 	<VisualizerRef target="DownSampler" path=".ds"/>
 	<VisualizerRef target="UpSampler" path=".us"/>
+</AutoGrid>
+
+<AutoGrid ref='pair_1' step='col'>
+	<VisualizerRef target="Gaussian" path=".Gaussian_1"/>
+	<VisualizerRef target="DelayDiff" path=".DelayDiff_0"/>
+</AutoGrid>
+
+<AutoGrid ref='pair_2' step='col'>
+	<VisualizerRef target="Gaussian" path=".Gaussian_2"/>
+	<VisualizerRef target="DelayDiff" path=".DelayDiff_1"/>
+</AutoGrid>
+
+<AutoGrid ref='pair_3' step='col'>
+	<VisualizerRef target="Gaussian" path=".Gaussian_3"/>
+	<VisualizerRef target="DelayDiff" path=".DelayDiff_2"/>
+</AutoGrid>
+
+<AutoGrid ref='pair_4' step='col'>
+	<VisualizerRef target="Gaussian" path=".Gaussian_4"/>
+	<VisualizerRef target="DelayDiff" path=".DelayDiff_3"/>
+</AutoGrid>
+
+<AutoGrid ref='dsp' step='row'>
+	<VisualizerRef target="Gaussian" path=".Gaussian_0"/>
+  <VisualizerRef target="pair_1"/>
+  <VisualizerRef target="pair_2"/>
+  <VisualizerRef target="pair_3"/>
+  <VisualizerRef target="pair_4"/>
+</AutoGrid>
+
+<AutoGrid ref='Octave' step='col'>
+  <VisualizerRef target="samplers"/>
+  <VisualizerRef target="dsp"/>
 </AutoGrid>
 
 <!-- Top-level & components -->
