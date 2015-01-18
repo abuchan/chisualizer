@@ -1,5 +1,3 @@
-import DisplayBase
-
-import MappedDisplay
-import NumericalDisplay
-import SubprocessDisplay
+import Modifier
+import VisualizerToString
+import VisualizerToInt

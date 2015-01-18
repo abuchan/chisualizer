@@ -4,11 +4,11 @@
 # Brian Zimmer (bmzimmer@eecs.berkeley.edu)
 #
 # This makefile will generate verilog files or an emulator from chisel code
-CSRC_DIR = emulator
+CSRC_DIR = $(abspath emulator)
 
-RTL_FILES := Makefile *.scala
+RTL_FILES := Makefile ../../../flo/src/main/scala/*.scala
 
-CPP_FILES = $(CSRC_DIR)/GCD.cpp $(CSRC_DIR)/main.cpp
+CPP_FILES = $(CSRC_DIR)/FixNetwork2d.cpp $(CSRC_DIR)/main.cpp
 OBJ_FILES = $(CPP_FILES:.cpp=.o)
 INCLUDES = $(wildcard $(CSRC_DIR)/*.h)
 
@@ -21,7 +21,7 @@ PROGFILE := $(CSRC_DIR)/emulator
 default: emulator
 
 $(CSRC_DIR)/%.cpp: $(RTL_FILES)
-	sbt "run --backend c --targetDir $(CSRC_DIR)"
+	cd ../../../flo && sbt -mem 16384 "project flo" "run new-fix-grid --rows 2 --cols 2 --ports grid --array grid --portsDump $(CSRC_DIR)/network.conn --backend c --targetDir $(CSRC_DIR) --debug --ioDebug"
 
 $(CSRC_DIR)/%.o: $(CSRC_DIR)/%.cpp $(INCLUDES)
 	$(CPP) $(CPPFLAGS) -c -o $@ $<
@@ -35,7 +35,7 @@ $(PROGFILE): $(OBJ_FILES)
 emulator: $(PROGFILE) 
 
 run: emulator
-	python ../../src/main.py  --emulator emulator/emulator --visualizer_desc gcd.yaml
+	python ../../src/main.py  --emulator emulator/emulator --visualizer_desc fix-noc.yaml
 
 clean:
 	rm -rf emulator project target
